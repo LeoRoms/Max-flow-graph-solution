@@ -1,0 +1,33 @@
+
+Estratégias:
+
+I) para achar a capacidade maxima da rede:
+ - maximizar o flow dos geradores para o resto da rede
+ - se o flow do gerador -> consumidor == capacidade do consumidor -> não operar mais com esse consumidor
+ - se o flow do gerador -> consumidor > capacidade do consumidor -> manter flow e tentar achar conexoes 
+desse consumidor para outros -> sempre maximizar o quanto de energia enviar desde que o consumidor receba tudo
+que precisa.
+ - se o flow do gerador -> consumidor < capacidade do consumidor -> procurar conexoes de outros consumidores
+para esse consumidor.
+
+
+
+
+
+
+TESTE:
+
+6 7
+1 0
+2 20
+3 30
+4 40
+5 50
+6 50
+1 2 50
+1 3 60
+1 4 70
+1 5 80
+1 6 30
+2 4 10
+5 6 15
