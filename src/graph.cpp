@@ -1,11 +1,16 @@
 #include "graph.hpp"
+#include "solve.hpp"
 
 void Graph::add(Node n){
     graph.push_back(n);    
 }
 
-void Graph::add_edge(int from, par dupla){
-    graph[from-1].connections.push_back(dupla);
+void Graph::add_edge(int from, edge data) {
+    if (from - 1 >= 0 && from - 1 < (int)graph.size()) {
+        graph[from - 1].connections.push_back(data);
+    } else {
+        cerr << "Erro: Índice inválido em add_edge: " << from << endl;
+    }
 }
 
 Graph::~Graph(){
@@ -16,29 +21,43 @@ void Graph::print_graph(){
     for(Node node : graph){
         cout << node.index << " - to | flow:" << endl;
         if(!node.connections.size()) cout << "no connections\n";
-        for(par dupla : node.connections){
-            cout << dupla.to << " | " << dupla.capacity << endl;
+        for(edge data : node.connections){
+            cout << data.to << " | " << data.capacity << endl;
         }
     }
 }
 
 // Adiciona uma fonte unica e um fim unico
 void Graph::graph_transform(){
-    Node Source(vertices+1,0); // Super Source -> conecta a todos os geradores com arestas de peso: max_int (em tese infinito)
+    Node Source(vertices+1, 0); // Super Source
     Source.is_generator = true;
-    Node Sink(vertices+2,0); // Super Sink -> todos os consumidores conectam a ele com arestas de peso: node.needed_flow
+    Node Sink(vertices+2, 0);  // Super Sink
     
+    // Adiciona o Source e o Sink ao grafo
     graph.push_back(Source);
     graph.push_back(Sink);
 
-    for(Node n : graph){
-        if(n.is_generator && n.index != vertices+1){
-            par dupla_gen(n.index,2147483647);
-            add_edge(vertices+1,dupla_gen);
-        }
-        if(!n.is_generator && n.index != vertices+2){
-            par dupla_con(vertices+2, n.needed_flow);
-            add_edge(n.index, dupla_con);
+    for (size_t i = 0; i < graph.size() - 2; i++) { // Evitar usar o próprio Source/Sink na iteração
+        Node &n = graph[i];
+        if (n.is_generator) {
+            edge data_gen(n.index, INT_MAX); // Aresta com peso "infinito"
+            add_edge(vertices + 1, data_gen);
+        } 
+        if (!n.is_generator) {
+            edge data_con(vertices + 2, n.needed_flow); // Aresta até o Sink com fluxo necessário
+            add_edge(n.index, data_con);
         }
     }
+}
+
+int Graph::get_vertices(){
+    return vertices;
+}
+
+int Graph::get_arestas(){
+    return arestas;
+}
+
+vector<Node> Graph::get_graph(){
+    return graph;
 }

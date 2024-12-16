@@ -1,4 +1,5 @@
 #include "graph.hpp"
+#include "solve.hpp"
 
 using namespace std;
 
@@ -19,12 +20,15 @@ int main(){
     for(int i=0; i<E; i++){
         int from, to, cost;
         cin >> from >> to >> cost;
-        par dupla(to,cost);
-        city.add_edge(from, dupla);
+        edge data(to,cost);
+        city.add_edge(from, data);
     }
 
     city.graph_transform();
+    //city.print_graph();   
 
-    // OK
-    city.print_graph();
+    cout << solve_max_flow(city,V) << endl;
+    cout << verify_flow(city) << endl;
+
+    print_effective_flows(city);
 }

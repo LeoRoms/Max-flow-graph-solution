@@ -3,21 +3,23 @@
 
 #include <vector>
 #include <iostream>
+#include <climits>
 
-using namespace std;//a
+using namespace std;
 
-struct par{
+struct edge{
     int to;
     int capacity;
+    int original_capacity;
 
-    par(int a, int b) : to(a), capacity(b) {}
+    edge(int a, int b) : to(a), capacity(b), original_capacity(b) {}
 };
 
 struct Node{
     int index;
     int needed_flow;
     bool is_generator;
-    vector<par> connections;
+    vector<edge> connections;
 
     Node(int i, int f) : index(i), needed_flow(f), is_generator(false), connections() {}
 };
@@ -27,9 +29,13 @@ public:
     Graph(int v, int e) : vertices(v), arestas(e), graph() {}
     ~Graph();
     void add(Node n);
-    void add_edge(int from, par dupla);
+    void add_edge(int from, edge data);
     void print_graph();
     void graph_transform();
+
+    int get_vertices();
+    int get_arestas();
+    vector<Node> get_graph();
 
 private:
     int vertices;
