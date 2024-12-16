@@ -19,10 +19,17 @@ Graph::~Graph(){
 
 void Graph::print_graph(){
     for(Node node : graph){
-        cout << node.index << " - to | flow:" << endl;
+        cout << node.index << " - to | capacity | original capacity:" << endl;
         if(!node.connections.size()) cout << "no connections\n";
         for(edge data : node.connections){
-            cout << data.to << " | " << data.capacity << endl;
+            cout << data.to << " | " << data.capacity << " " << data.original_capacity <<  endl;
+        }
+    }
+    for(Node node : rGraph){
+        cout << node.index << " - to | capacity | original capacity:" << endl;
+        if(!node.connections.size()) cout << "no connections\n";
+        for(edge data : node.connections){
+            cout << data.to << " | " << data.capacity << data.original_capacity <<  endl;
         }
     }
 }
@@ -48,6 +55,7 @@ void Graph::graph_transform(){
             add_edge(n.index, data_con);
         }
     }
+    rGraph = graph;
 }
 
 int Graph::get_vertices(){

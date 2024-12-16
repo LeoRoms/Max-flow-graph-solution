@@ -29,8 +29,8 @@ bool bfs(vector<Node> &rGraph, int source, int sink, vector<int> &parent) {
 }
 
 // Ford_Fulkerson algorithm for max flow / min cut
-int solve_max_flow(Graph &net, int v) {
-    vector<Node> rGraph = net.get_graph();
+int solve_max_flow(vector<Node> rGraph, int v) {
+    //vector<Node> rGraph = net.get_graph();
     int source = v + 1; // Super Source
     int sink = v + 2;   // Super Sink
 
@@ -50,6 +50,9 @@ int solve_max_flow(Graph &net, int v) {
                 }
             }
         }
+        
+
+        // Alteracao possível: atualizar as capacidades no prórpio grafo! -> muda as capacidades das arestas no fim 
 
         // Atualiza as capacidades residuais
         for (int v = sink; v != source; v = parent[v - 1]) {
@@ -100,7 +103,6 @@ int verify_flow(Graph &net) {
             }
         }
     }
-
     return total_deficit;
 }
 

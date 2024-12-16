@@ -37,6 +37,8 @@ public:
     int get_arestas();
     vector<Node> get_graph();
 
+    vector<Node> rGraph;
+
 private:
     int vertices;
     int arestas;

@@ -6,7 +6,7 @@
 
 bool bfs(vector<Node> &rGraph, int source, int sink, vector<int> &parent);
 
-int solve_max_flow(Graph &net, int v);
+int solve_max_flow(vector<Node> net, int v);
 
 int verify_flow(Graph &net);
 

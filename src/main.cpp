@@ -27,8 +27,8 @@ int main(){
     city.graph_transform();
     //city.print_graph();   
 
-    cout << solve_max_flow(city,V) << endl;
+    cout << solve_max_flow(city.rGraph,V) << endl;
     cout << verify_flow(city) << endl;
 
-    print_effective_flows(city);
+    city.print_graph();
 }
