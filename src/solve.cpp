@@ -53,6 +53,7 @@ int solve_max_flow(vector<Node> rGraph, int v) {
         
 
         // Alteracao possível: atualizar as capacidades no prórpio grafo! -> muda as capacidades das arestas no fim 
+        //a
 
         // Atualiza as capacidades residuais
         for (int v = sink; v != source; v = parent[v - 1]) {
