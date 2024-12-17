@@ -29,6 +29,7 @@ int main(){
 
     cout << solve_max_flow(city.rGraph,V) << endl;
     cout << verify_flow(city) << endl;
+    cout << calculate_waste(city.rGraph) << endl;
 
     city.print_graph();
 }

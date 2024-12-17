@@ -29,8 +29,7 @@ bool bfs(vector<Node> &rGraph, int source, int sink, vector<int> &parent) {
 }
 
 // Ford_Fulkerson algorithm for max flow / min cut
-int solve_max_flow(vector<Node> rGraph, int v) {
-    //vector<Node> rGraph = net.get_graph();
+int solve_max_flow(vector<Node> &rGraph, int v) {
     int source = v + 1; // Super Source
     int sink = v + 2;   // Super Sink
 
@@ -50,10 +49,7 @@ int solve_max_flow(vector<Node> rGraph, int v) {
                 }
             }
         }
-        
-
         // Alteracao possível: atualizar as capacidades no prórpio grafo! -> muda as capacidades das arestas no fim 
-        //a
 
         // Atualiza as capacidades residuais
         for (int v = sink; v != source; v = parent[v - 1]) {
@@ -107,21 +103,14 @@ int verify_flow(Graph &net) {
     return total_deficit;
 }
 
-void print_effective_flows(Graph &net) {
-    vector<Node> rGraph = net.get_graph();
-
-    for (const Node &node : rGraph) {
-        for (const edge &edge : node.connections) {
-            int effective_flow = edge.original_capacity - edge.capacity;
-
-            // Fluxo efetivo deve ser >= 0
-            if (effective_flow > 0) {
-                cout << "Edge (" << node.index << " -> " << edge.to
-                     << "): Effective Flow = " << effective_flow << endl;
-            } else {
-                cout << "Edge (" << node.index << " -> " << edge.to
-                     << "): No effective flow." << endl;
-            }
+int calculate_waste(vector<Node> rGraph){
+    int waste = 0;
+    for(Node node : rGraph){
+        if(node.is_generator){
+            for(edge data : node.connections){
+                if(data.capacity < 2000000) waste += data.capacity;
+            }   
         }
     }
+    return waste;
 }

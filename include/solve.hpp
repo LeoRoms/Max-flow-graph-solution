@@ -6,11 +6,11 @@
 
 bool bfs(vector<Node> &rGraph, int source, int sink, vector<int> &parent);
 
-int solve_max_flow(vector<Node> net, int v);
+int solve_max_flow(vector<Node> &graph, int v);
 
 int verify_flow(Graph &net);
 
-int calculate_waste(Graph &net);
+int calculate_waste(vector<Node> rGraph);
 
 void print_effective_flows(Graph &net);
 

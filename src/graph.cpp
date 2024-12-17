@@ -18,18 +18,12 @@ Graph::~Graph(){
 }
 
 void Graph::print_graph(){
-    for(Node node : graph){
-        cout << node.index << " - to | capacity | original capacity:" << endl;
-        if(!node.connections.size()) cout << "no connections\n";
-        for(edge data : node.connections){
-            cout << data.to << " | " << data.capacity << " " << data.original_capacity <<  endl;
-        }
-    }
     for(Node node : rGraph){
         cout << node.index << " - to | capacity | original capacity:" << endl;
         if(!node.connections.size()) cout << "no connections\n";
         for(edge data : node.connections){
-            cout << data.to << " | " << data.capacity << data.original_capacity <<  endl;
+            data.capacity = data.original_capacity - data.capacity;
+            cout << data.to << " | " << data.capacity << " " << data.original_capacity <<  endl;
         }
     }
 }
