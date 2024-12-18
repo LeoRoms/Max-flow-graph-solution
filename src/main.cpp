@@ -25,9 +25,13 @@ int main(){
     }
 
     city.graph_transform();  
-    int max_flow = city.fordFulkerson(V+1,V+2);
-    city.updateOriginalGraph();
+    int max_flow = solve_max_flow(city.rGraph,V);
     cout << max_flow << endl;
+    cout << verify_flow(city) << endl;
+    cout << calculate_waste(city.rGraph) - max_flow << endl;
 
+    city.graph_update();
+    city.node_update();
     city.print_graph();
+    city.print_node_capacity();
 }

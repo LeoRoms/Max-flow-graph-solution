@@ -4,7 +4,6 @@
 #include <vector>
 #include <iostream>
 #include <climits>
-#include <queue>
 
 using namespace std;
 
@@ -14,7 +13,7 @@ struct edge{
     int capacity;
     int original_capacity;
 
-    edge(int to, int capacity, int from) : from (from), to(to), capacity(capacity), original_capacity(capacity) {}
+    edge(int to, int cost, int from) : from (from), to(to), capacity(cost), original_capacity(cost) {}
 };
 
 struct Node{
@@ -39,18 +38,16 @@ public:
     int get_vertices();
     int get_arestas();
     vector<Node> get_graph();
+    void graph_update();
+    void node_update();
+    void print_node_capacity();
 
-    int fordFulkerson(int source, int sink);
-    void updateOriginalGraph();
+    vector<Node> rGraph;
 
 private:
     int vertices;
     int arestas;
     vector<Node> graph;
-    vector<Node> rGraph;
-
-    bool bfs(int source, int sink, vector<int>& parent);
-    void initializeResidualGraph();
 };
 
 #endif

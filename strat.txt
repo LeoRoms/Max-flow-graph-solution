@@ -1,20 +1,21 @@
+~
+~Estratégias:
+~
+~I) para achar a capacidade maxima da rede:
+~ - maximizar o flow dos geradores para o resto da rede
+~ - se o flow do gerador -> consumidor == capacidade do consumidor -> não operar mais com esse consumidor
+~ - se o flow do gerador -> consumidor > capacidade do consumidor -> manter flow e tentar achar conexoes 
+~desse consumidor para outros -> sempre maximizar o quanto de energia enviar desde que o consumidor receba tudo
+~que precisa.
+~ - se o flow do gerador -> consumidor < capacidade do consumidor -> procurar conexoes de outros consumidores
+~para esse consumidor.
+~
+~
+~
 
-Estratégias:
-
-I) para achar a capacidade maxima da rede:
- - maximizar o flow dos geradores para o resto da rede
- - se o flow do gerador -> consumidor == capacidade do consumidor -> não operar mais com esse consumidor
- - se o flow do gerador -> consumidor > capacidade do consumidor -> manter flow e tentar achar conexoes 
-desse consumidor para outros -> sempre maximizar o quanto de energia enviar desde que o consumidor receba tudo
-que precisa.
- - se o flow do gerador -> consumidor < capacidade do consumidor -> procurar conexoes de outros consumidores
-para esse consumidor.
 
 
-
-
-
-
+TESTE:
 TESTES:
 
 6 7
@@ -31,7 +32,6 @@ TESTES:
 1 6 30
 2 4 10
 5 6 15
-
 aparentemente esses deram problema no verify flow
 12 16
 1 0
@@ -62,6 +62,7 @@ aparentemente esses deram problema no verify flow
 8 7 41
 9 6 26
 11 3 7
+
 
 9 12
 1 0

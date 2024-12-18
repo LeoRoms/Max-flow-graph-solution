@@ -52,7 +52,6 @@ int solve_max_flow(vector<Node> &rGraph, int v) {
         // Atualiza as capacidades residuais
         for (int v = sink; v != source; v = parent[v - 1]) {
             int u = parent[v - 1];
-
             // Atualiza a aresta direta
             for (edge &edge : rGraph[u - 1].connections) {
                 if (edge.to == v) {
@@ -71,7 +70,7 @@ int solve_max_flow(vector<Node> &rGraph, int v) {
             }
             // Se a aresta residual não existir, adicioná-la
             if (!found) {
-            rGraph[v - 1].connections.push_back(edge(u, path_flow,0));
+            rGraph[v - 1].connections.push_back(edge(u, path_flow, 0));
             }
         }
 
