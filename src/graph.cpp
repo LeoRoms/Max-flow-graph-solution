@@ -15,10 +15,11 @@ void Graph::add_edge(int from, edge data) {
 
 Graph::~Graph(){
     graph.clear();
+    rGraph.clear();
 }
 
 void Graph::print_graph() {
-    for (Node &node : rGraph) {
+    for (Node &node : graph) {
         cout << "Node " << node.index << " :" << endl;
         if (node.connections.empty()) {
             cout << "  No connections\n";
@@ -53,7 +54,6 @@ void Graph::graph_transform(){
             add_edge(n.index, data_con);
         }
     }
-    rGraph = graph;
 }
 
 int Graph::get_vertices(){
@@ -66,4 +66,116 @@ int Graph::get_arestas(){
 
 vector<Node> Graph::get_graph(){
     return graph;
+}
+
+void Graph::initializeResidualGraph() {
+    rGraph.clear();
+    rGraph.resize(graph.size()); // Ajusta o tamanho do rGraph
+
+    for (size_t u = 0; u < graph.size(); ++u) {
+        Node residualNode(graph[u].index, graph[u].needed_flow);
+        residualNode.is_generator = graph[u].is_generator;
+
+        for (const edge& e : graph[u].connections) {
+            // Aresta direta
+            residualNode.connections.emplace_back(e.to, e.original_capacity, u);
+
+            // Adiciona a aresta reversa ao grafo residual
+            bool reverseEdgeExists = false;
+            for (edge& re : rGraph[e.to].connections) {
+                if (re.to == u) {
+                    reverseEdgeExists = true;
+                    break;
+                }
+            }
+            if (!reverseEdgeExists) {
+                rGraph[e.to].connections.emplace_back(u, 0, e.to);
+            }
+        }
+
+        rGraph[u] = residualNode;
+    }
+}
+
+
+bool Graph::bfs(int source, int sink, vector<int>& parent) {
+    parent.assign(rGraph.size(), -1); // Ajusta o tamanho para rGraph
+    vector<bool> visited(rGraph.size(), false);
+    queue<int> q;
+
+    q.push(source);
+    visited[source] = true;
+
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+
+        for (const edge& e : rGraph[u].connections) {
+            if (!visited[e.to] && e.capacity > 0) { // Capacidade residual positiva
+                parent[e.to] = u;
+                if (e.to == sink)
+                    return true;
+                visited[e.to] = true;
+                q.push(e.to);
+            }
+        }
+    }
+    return false;
+}
+
+int Graph::fordFulkerson(int source, int sink) {
+    initializeResidualGraph(); // Inicializa o rGraph com base no grafo original
+
+    vector<int> parent(vertices);
+    int maxFlow = 0;
+
+    while (bfs(source, sink, parent)) {
+        int pathFlow = INT_MAX;
+
+        // Encontra o fluxo máximo no caminho aumentante
+        for (int v = sink; v != source; v = parent[v]) {
+            int u = parent[v];
+            for (edge& e : rGraph[u].connections) {
+                if (e.to == v) {
+                    pathFlow = min(pathFlow, e.capacity);
+                    break;
+                }
+            }
+        }
+
+        // Atualiza capacidades residuais no caminho
+        for (int v = sink; v != source; v = parent[v]) {
+            int u = parent[v];
+            for (edge& e : rGraph[u].connections) {
+                if (e.to == v) {
+                    e.capacity -= pathFlow; // Reduz capacidade no sentido do fluxo
+                    break;
+                }
+            }
+            for (edge& e : rGraph[v].connections) {
+                if (e.to == u) {
+                    e.capacity += pathFlow; // Aumenta capacidade no sentido contrário
+                    break;
+                }
+            }
+        }
+
+        maxFlow += pathFlow; // Incrementa o fluxo máximo
+    }
+
+    return maxFlow;
+}
+
+void Graph::updateOriginalGraph() {
+    for (size_t u = 0; u < graph.size(); ++u) {
+        for (edge& e : graph[u].connections) {
+            for (const edge& re : rGraph[u].connections) {
+                if (e.to == re.to) {
+                    e.capacity = e.original_capacity - re.capacity; // Fluxo efetivo
+                    e.capacity = max(0, e.capacity); // Garante que o fluxo não é negativo
+                    break;
+                }
+            }
+        }
+    }
 }

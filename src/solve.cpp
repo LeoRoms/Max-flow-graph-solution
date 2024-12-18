@@ -71,7 +71,7 @@ int solve_max_flow(vector<Node> &rGraph, int v) {
             }
             // Se a aresta residual não existir, adicioná-la
             if (!found) {
-            rGraph[v - 1].connections.push_back(edge(u, path_flow));
+            rGraph[v - 1].connections.push_back(edge(u, path_flow,0));
             }
         }
 
