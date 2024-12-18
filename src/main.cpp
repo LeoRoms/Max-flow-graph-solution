@@ -20,16 +20,15 @@ int main(){
     for(int i=0; i<E; i++){
         int from, to, cost;
         cin >> from >> to >> cost;
-        edge data(to,cost);
+        edge data(to, cost, from);
         city.add_edge(from, data);
     }
 
-    city.graph_transform();
-    //city.print_graph();   
-
-    cout << solve_max_flow(city.rGraph,V) << endl;
+    city.graph_transform();  
+    int max_flow = solve_max_flow(city.rGraph,V);
+    cout << max_flow << endl;
     cout << verify_flow(city) << endl;
-    cout << calculate_waste(city.rGraph) << endl;
+    cout << calculate_waste(city.rGraph) - max_flow << endl;
 
-    city.print_graph();
+    //city.print_graph();
 }

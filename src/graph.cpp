@@ -17,13 +17,17 @@ Graph::~Graph(){
     graph.clear();
 }
 
-void Graph::print_graph(){
-    for(Node node : rGraph){
-        cout << node.index << " - to | capacity | original capacity:" << endl;
-        if(!node.connections.size()) cout << "no connections\n";
-        for(edge data : node.connections){
-            data.capacity = data.original_capacity - data.capacity;
-            cout << data.to << " | " << data.capacity << " " << data.original_capacity <<  endl;
+void Graph::print_graph() {
+    for (Node &node : rGraph) {
+        cout << "Node " << node.index << " :" << endl;
+        if (node.connections.empty()) {
+            cout << "  No connections\n";
+        }
+        for (edge &data : node.connections) {
+            int flow = data.original_capacity - data.capacity; // Fluxo real
+            cout << "  To: " << data.to 
+                 << ", Flow: " << flow 
+                 << ", Original Capacity: " << data.original_capacity << endl;
         }
     }
 }
@@ -41,11 +45,11 @@ void Graph::graph_transform(){
     for (size_t i = 0; i < graph.size() - 2; i++) { // Evitar usar o próprio Source/Sink na iteração
         Node &n = graph[i];
         if (n.is_generator) {
-            edge data_gen(n.index, INT_MAX); // Aresta com peso "infinito"
+            edge data_gen(n.index, INT_MAX, 0); // Aresta com peso "infinito"
             add_edge(vertices + 1, data_gen);
         } 
         if (!n.is_generator) {
-            edge data_con(vertices + 2, n.needed_flow); // Aresta até o Sink com fluxo necessário
+            edge data_con(vertices + 2, n.needed_flow, 0); // Aresta até o Sink com fluxo necessário
             add_edge(n.index, data_con);
         }
     }

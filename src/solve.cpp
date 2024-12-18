@@ -11,7 +11,6 @@ bool bfs(vector<Node> &rGraph, int source, int sink, vector<int> &parent) {
     while (!q.empty()) {
         int u = q.front();
         q.pop();
-
         for (edge &edge : rGraph[u - 1].connections) {
             int v = edge.to;
             if (!visited[v - 1] && edge.capacity > 0) {
@@ -50,28 +49,35 @@ int solve_max_flow(vector<Node> &rGraph, int v) {
             }
         }
         // Alteracao possível: atualizar as capacidades no prórpio grafo! -> muda as capacidades das arestas no fim 
-
         // Atualiza as capacidades residuais
         for (int v = sink; v != source; v = parent[v - 1]) {
             int u = parent[v - 1];
+
+            // Atualiza a aresta direta
             for (edge &edge : rGraph[u - 1].connections) {
                 if (edge.to == v) {
                     edge.capacity -= path_flow;
                     break;
                 }
             }
+            // Atualiza a aresta residual
+            bool found = false;
             for (edge &edge : rGraph[v - 1].connections) {
                 if (edge.to == u) {
                     edge.capacity += path_flow;
+                    found = true;
                     break;
                 }
+            }
+            // Se a aresta residual não existir, adicioná-la
+            if (!found) {
+            rGraph[v - 1].connections.push_back(edge(u, path_flow));
             }
         }
 
         // Incrementa o fluxo máximo
         max_flow += path_flow;
     }
-
     return max_flow;
 }
 

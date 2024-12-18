@@ -8,20 +8,22 @@
 using namespace std;
 
 struct edge{
+    int from;
     int to;
     int capacity;
     int original_capacity;
 
-    edge(int a, int b) : to(a), capacity(b), original_capacity(b) {}
+    edge(int to, int cost, int from) : from (from), to(to), capacity(cost), original_capacity(cost) {}
 };
 
 struct Node{
     int index;
     int needed_flow;
+    int effective_flow;
     bool is_generator;
     vector<edge> connections;
 
-    Node(int i, int f) : index(i), needed_flow(f), is_generator(false), connections() {}
+    Node(int i, int f) : index(i), needed_flow(f), effective_flow(0), is_generator(false), connections() {}
 };
 
 class Graph{
