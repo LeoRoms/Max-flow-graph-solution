@@ -81,28 +81,12 @@ int solve_max_flow(vector<Node> &rGraph, int v) {
 }
 
 int verify_flow(Graph &net) {
-    vector<Node> rGraph = net.get_graph();
+    vector<Node> temp_graph = net.get_graph();
     int total_deficit = 0;
 
-    // Itera sobre todos os vértices
-    for (const Node &node : rGraph) {
-        if (!node.is_generator && node.needed_flow > 0) {
-            int received_flow = 0;
-
-            // Soma os fluxos que chegam no nó atual
-            for (const Node &other : rGraph) {
-                for (const edge &connection : other.connections) {
-                    if (connection.to == node.index) {
-                        received_flow += connection.capacity; // Ajustar com base no residual
-                    }
-                }
-            }
-
-            // Calcula o déficit de fluxo, se houver
-            if (received_flow < node.needed_flow) {
-                int deficit = node.needed_flow - received_flow;
-                total_deficit += deficit;
-            }
+    for(Node node : temp_graph){
+        if(node.needed_flow>0){ // se nao eh gerador ou sink / source
+            total_deficit += node.needed_flow;
         }
     }
     return total_deficit;

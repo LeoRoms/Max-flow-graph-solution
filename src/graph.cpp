@@ -92,8 +92,12 @@ void Graph::graph_update(){
 void Graph::node_update(){
     for (Node &node : graph) {
         for (edge &data : node.connections) {
-            int flow = data.original_capacity - data.capacity; // Fluxo real
-            node.effective_flow += flow;
+            if(data.to == vertices+2 && data.original_capacity>0 && node.index < vertices){
+                node.effective_flow = data.original_capacity - data.capacity; //cada vertice guarda capacidade efetiva
+            } else {
+                node.effective_flow += data.original_capacity - data.capacity; //vertice 1 e vertice 10 guardam capacidade max
+            }
+            
         }
     }
 }
