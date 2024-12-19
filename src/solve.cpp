@@ -103,3 +103,67 @@ int calculate_waste(vector<Node> rGraph){
     }
     return waste;
 }
+
+void heapify(std::vector<edge>& edges, int n, int i) {
+    int largest = i;         // Assume que o nó atual é o maior
+    int left = 2 * i + 1;    // Filho à esquerda
+    int right = 2 * i + 2;   // Filho à direita
+
+    // Verifica se o filho à esquerda é maior que o nó atual
+    if (left < n && edges[left].original_capacity < edges[largest].original_capacity) {
+        largest = left;
+    }
+
+    // Verifica se o filho à direita é maior que o maior encontrado até agora
+    if (right < n && edges[right].original_capacity < edges[largest].original_capacity) {
+        largest = right;
+    }
+
+    // Se o maior não é o nó atual, troca os elementos e continua ajustando o heap
+    if (largest != i) {
+        std::swap(edges[i], edges[largest]);
+        heapify(edges, n, largest);
+    }
+}
+
+void heapSort(std::vector<edge>& edges) {
+    int n = edges.size();
+
+    // Constrói o heap máximo
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        heapify(edges, n, i);
+    }
+
+    // Extrai elementos do heap um por um
+    for (int i = n - 1; i > 0; i--) {
+        // Move o maior elemento atual para o final do vetor
+        std::swap(edges[0], edges[i]);
+
+        // Reorganiza o heap para manter a propriedade do heap
+        heapify(edges, i, 0);
+    }
+}
+
+
+
+void find_critical(Graph &net){
+    vector<Node> g = net.get_graph();
+    vector<edge> critical_edges;
+    int count = 0;
+    for(Node node : g){
+        for(edge e : node.connections){
+            int flow = e.original_capacity - e.capacity;
+            if(node.index < net.get_vertices() && flow == e.original_capacity && e.from != 0){
+                count++;
+                critical_edges.push_back(e);
+            }
+        }
+    }
+    heapSort(critical_edges);
+    cout << count << endl;
+    if(count){
+        for(size_t i=0; i<count; i++){
+            cout << critical_edges[i].from << " " << critical_edges[i].to << " " << critical_edges[i].original_capacity << endl;
+        }
+    }
+}

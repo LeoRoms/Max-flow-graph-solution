@@ -1,5 +1,4 @@
 #include "graph.hpp"
-#include "solve.hpp"
 
 void Graph::add(Node n){
     graph.push_back(n);    
@@ -19,18 +18,6 @@ Graph::~Graph(){
 }
 
 void Graph::print_graph() {
-    for (Node &node : rGraph) {
-        cout << "Node " << node.index << " :" << endl;
-        if (node.connections.empty()) {
-            cout << "  No connections\n";
-        }
-        for (edge &data : node.connections) {
-            int flow = data.original_capacity - data.capacity; // Fluxo real
-            cout << "  To: " << data.to 
-                 << ", Flow: " << flow 
-                 << ", Original Capacity: " << data.original_capacity << endl;
-        }
-    }
     for (Node &node : graph) {
         cout << "Node " << node.index << " :" << endl;
         if (node.connections.empty()) {

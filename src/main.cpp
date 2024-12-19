@@ -26,12 +26,16 @@ int main(){
 
     city.graph_transform();  
     int max_flow = solve_max_flow(city.rGraph,V);
+    city.graph_update();
+    city.node_update();
     cout << max_flow << endl;
     cout << verify_flow(city) - max_flow << endl;
     cout << calculate_waste(city.rGraph) - max_flow << endl;
+    
+    city.print_graph();
 
-    //city.graph_update();
-    //city.node_update();
+    find_critical(city);
+
     //city.print_graph();
     //city.print_node_capacity();
 }
